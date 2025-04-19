@@ -54,3 +54,54 @@ router.post('/book', auth, async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 });
+
+
+router.put('/update/:id', auth, async (req, res) => {
+    const { status } = req.body;
+  
+    try {
+      const validStatuses = ['Pending', 'Approved', 'Completed', 'Cancelled'];
+      if (!status || !validStatuses.includes(status)) {
+        return res.status(400).json({ msg: 'Invalid status' });
+      }
+  
+      const booking = await Booking.findById(req.params.id)
+        .populate('bike')
+        .populate('renter');
+  
+      if (!booking) {
+        return res.status(404).json({ msg: 'Booking not found' });
+      }
+  
+      if (booking.bike.owner.toString() !== req.user.id) {
+        return res.status(403).json({ msg: 'Not authorized' });
+      }
+  
+      booking.status = status;
+  
+      if (status === 'Completed') {
+        booking.bike.availability = true;
+        const provider = await User.findById(booking.bike.owner);
+        provider.earnings = (provider.earnings || 0) + booking.amount;
+        await provider.save();
+        await booking.bike.save();
+      } else if (status === 'Cancelled') {
+        booking.bike.availability = true;
+        await booking.bike.save();
+      }
+  
+      await booking.save();
+  
+      await sendNotification(
+        booking.renter.email,
+        'Booking Update',
+        `Your booking is now ${status}.`
+      );
+  
+      res.json(booking);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ msg: 'Server error' });
+    }
+  });
+  
