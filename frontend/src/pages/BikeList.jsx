@@ -67,6 +67,20 @@ const BikeList = ({ isNightMode }) => {
       
 
       {/* Google Map */}
+
+ <LoadScript googleMapsApiKey="<your-google-maps-api-key>"> {/* Replace with your key */}
+        <GoogleMap
+          mapContainerStyle={{ height: '400px', width: '100%' }}
+          zoom={10}
+          center={bikes[0] ? { lat: bikes[0].lat, lng: bikes[0].lng } : { lat: 37.7749, lng: -122.4194 }}
+        >
+          {bikes.map(bike => (
+            <Marker key={bike._id} position={{ lat: bike.lat, lng: bike.lng }} />
+          ))}
+        </GoogleMap>
+      </LoadScript>
+
+
       
 
       {/* Bike Listings */}
