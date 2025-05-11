@@ -84,6 +84,25 @@ const BikeList = ({ isNightMode }) => {
       
 
       {/* Bike Listings */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        {bikes.map(bike => (
+          <div 
+            key={bike._id} 
+            className={`border p-4 rounded 
+              ${isNightMode ? 'bg-black border-white' : 'bg-white border-gray-300'}`}
+          >
+            <p className="font-semibold">{bike.model}</p>
+            <p>${bike.price}/day</p>
+            <p>{bike.location}</p>
+            <button
+              onClick={() => handleBook(bike._id)}
+              className="bg-[#00FF26] text-white p-2 mt-2 rounded hover:bg-black hover:text-[#00FF26] transition-colors w-full"
+            >
+              Book Now
+            </button>
+          </div>
+        ))}
+      </div>
       
 
       {/* List Bike Section */}
