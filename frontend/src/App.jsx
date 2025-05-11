@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import Register from './pages/Register';
+import BikeList from './pages/BikeList';
 
 const Navbar = ({ isNightMode, toggleMode }) => {
   return (
@@ -44,6 +45,9 @@ const App = () => {
         />
         <Routes>
           <Route path="/register" element={<Register setUser={setUser} isNightMode={isNightMode} />} />
+        </Routes>
+        <Routes>
+          <Route path= "/bike-list" element={<BikeList setUser={setUser} isNightMode={isNightMode}/>}/>
         </Routes>
       </div>
     </Router>
