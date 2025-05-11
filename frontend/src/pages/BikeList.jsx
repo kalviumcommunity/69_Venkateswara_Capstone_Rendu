@@ -45,6 +45,25 @@ const BikeList = ({ isNightMode }) => {
       <h2 className="text-2xl font-bold mb-4">Available Bikes</h2>
       
       {/* Search Bar */}
+      <div className="flex mb-6">
+        <input
+          type="text"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          placeholder="Search by location"
+          className={`border p-2 w-full rounded-l focus:outline-none focus:ring-2 focus:ring-[#00FF26] 
+            ${isNightMode 
+              ? 'text-white bg-black placeholder-white border-white' 
+              : 'text-black bg-white placeholder-gray-500 border-gray-300'}`}
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-[#00FF26] text-white p-2 rounded-r hover:bg-black hover:text-[#00FF26] transition-colors"
+        >
+          Search
+        </button>
+      </div>
+
       
 
       {/* Google Map */}
